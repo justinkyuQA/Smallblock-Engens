@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+sys.path.insert(0, str(ROOT))
+
+EXPECTED = [
+    "core","math","graphics","audio","assets","input","ecs","scene",
+    "physics","animation","ui","speech","network","random","chaos",
+    "runtime","plugins","registry"
+]
+
+def status():
+    from smallblock.registry import EngineRegistry
+
+    registry = EngineRegistry()
+    registry.discover()
+
+    print()
+    print("SmallBlock Engine Status")
+    print("========================")
+    print()
+
+    for engine in registry.list():
+        print(f"[OK] {engine.name:12} {engine.version}")
+
+    print()
+    print(f"Total Registered Engines: {len(registry.list())}")
+
+def doctor():
+    print()
+    print("SmallBlock Doctor")
+    print("=================")
+    print()
+
+    problems = 0
+
+    for name in EXPECTED:
+        folder = ROOT / "smallblock" / name
+        init = folder / "__init__.py"
+
+        if not folder.exists():
+            print(f"[MISS] {name:12} missing folder")
+            problems += 1
+        elif not init.exists():
+            print(f"[WARN] {name:12} missing __init__.py")
+            problems += 1
+        else:
+            print(f"[OK]   {name:12}")
+
+    print()
+    if problems == 0:
+        print("Health: OK")
+    else:
+        print(f"Health: {problems} issue(s) found")
+
+def usage():
+    print()
+    print("SmallBlock SDK")
+    print()
+    print("Commands:")
+    print("  status")
+    print("  doctor")
+    print()
+
+if len(sys.argv) < 2:
+    usage()
+    sys.exit()
+
+cmd = sys.argv[1]
+
+if cmd == "status":
+    status()
+elif cmd == "doctor":
+    doctor()
+else:
+    usage()
