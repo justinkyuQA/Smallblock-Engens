@@ -1,1 +1,1 @@
-from .manager import Input
+from .keyboard import Keyboard
