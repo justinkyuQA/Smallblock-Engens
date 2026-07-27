@@ -1,3 +1,5 @@
+
+
 class Camera:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -8,4 +10,5 @@ class Camera:
 
     def move(self, dx, dy):
         self.x += dx
-        self
+        self.y += dy
+
